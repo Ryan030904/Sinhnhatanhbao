@@ -2313,6 +2313,8 @@
         const btnSurprise = document.getElementById('btnSurprise');
         if (btnSurprise) {
             btnSurprise.addEventListener('click', () => {
+                if (bgMusic) bgMusic.pause();
+                sessionStorage.setItem('opened_index', 'true');
                 sessionStorage.setItem('birthday_unlocked', 'true');
                 sessionStorage.setItem('skip_countdown', 'true');
                 window.location.href = 'troll.html';

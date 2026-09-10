@@ -1344,6 +1344,7 @@
         const btnSurprise = document.getElementById('btnSurprise');
         if (btnSurprise) {
             btnSurprise.addEventListener('click', () => {
+                if (bgMusic) bgMusic.pause();
                 sessionStorage.setItem('skip_countdown', 'true');
                 window.location.href = 'troll.html';
             });

@@ -110,6 +110,52 @@
             transform: translateX(-3px);
         }
 
+        /* NÚT BẬT / TẮT ÂM THANH TROLL (GIỐNG TRANG BÁNH KEM) */
+        .btn-audio-troll {
+            position: fixed;
+            top: max(16px, env(safe-area-inset-top, 16px));
+            right: max(16px, env(safe-area-inset-right, 16px));
+            z-index: 100;
+            width: clamp(40px, 9vw, 46px);
+            height: clamp(40px, 9vw, 46px);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(20, 15, 35, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 1.15rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-audio-troll:hover {
+            background: rgba(255, 64, 129, 0.7);
+            transform: scale(1.08);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-audio-troll:active {
+            transform: scale(0.94);
+        }
+
+        .btn-audio-troll.active {
+            background: linear-gradient(135deg, #ff4081, #e91e63);
+            box-shadow: 0 0 15px rgba(255, 64, 129, 0.6);
+        }
+
+        /* ẨN NÚT ÂM THANH KHI ĐANG Ở BẢNG CHÀO ĐẦU TIÊN (CHƯA ẤN OK) */
+        body.state-intro .btn-audio-troll {
+            display: none !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
         /* KHUNG THẺ CHÍNH (CARD) - CĂN GIỮA MÀN HÌNH HOÀN HẢO */
         .card-container {
             position: relative;
@@ -545,6 +591,14 @@
         </svg>
     </a>
 
+    <!-- NÚT BẬT / TẮT ÂM THANH TROLL GIỐNG TRANG BÁNH KEM -->
+    <button class="btn-audio-troll active" id="btnAudio" title="Bật / Tắt Âm Thanh" aria-label="Bật hoặc tắt âm thanh">
+        🎵
+    </button>
+
+    <!-- ÂM THANH TROLL VÒNG LẶP CÁCH 3 GIÂY -->
+    <audio id="trollAudio" src="snaptik.vn_7229199216256486661.mp3" preload="auto"></audio>
+
     <!-- ẢNH NỀN TROLL ANH BẢO -->
     <div class="bg-cover"></div>
     <div class="bg-overlay"></div>
@@ -667,12 +721,79 @@
         const btnSubmitConfession = document.getElementById('btnSubmitConfession');
 
         /* ==============================================================
+           HỆ THỐNG ÂM THANH TRANG TROLL (VÒNG LẶP CÁCH 3 GIÂY & BẬT/TẮT GIỐNG BÁNH KEM)
+           ============================================================== */
+        const trollAudio = document.getElementById('trollAudio');
+        const btnAudio = document.getElementById('btnAudio');
+        let isAudioEnabled = true;
+        let replayTimer = null;
+
+        function startTrollAudio() {
+            if (!trollAudio || !isAudioEnabled) return;
+            clearTimeout(replayTimer);
+            replayTimer = null;
+            trollAudio.volume = 0.9;
+            const playPromise = trollAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isAudioEnabled = true;
+                    if (btnAudio) btnAudio.classList.add('active');
+                }).catch(() => {
+                    // Chờ tương tác nếu trình duyệt chặn autoplay
+                });
+            }
+        }
+
+        function stopTrollAudio() {
+            isAudioEnabled = false;
+            clearTimeout(replayTimer);
+            replayTimer = null;
+            if (trollAudio) {
+                trollAudio.pause();
+            }
+            if (btnAudio) btnAudio.classList.remove('active');
+        }
+
+        // Âm thanh và nút bật/tắt chỉ bắt đầu hoạt động sau khi người dùng bấm nút OK vào trang hỏi troll
+
+        // Cứ chạy hết âm thanh -> Cách tầm 3 giây sau bắt đầu bật lại theo vòng lặp vô hạn
+        if (trollAudio) {
+            trollAudio.addEventListener('ended', () => {
+                if (!isAudioEnabled) return;
+                clearTimeout(replayTimer);
+                replayTimer = setTimeout(() => {
+                    if (isAudioEnabled && trollAudio) {
+                        trollAudio.currentTime = 0;
+                        trollAudio.play().catch(() => {});
+                    }
+                }, 3000); // Khoảng nghỉ đúng 3 giây trước khi lặp lại
+            });
+        }
+
+        // Nút bật / tắt âm thanh giống hệt trang bánh kem
+        if (btnAudio) {
+            btnAudio.addEventListener('click', () => {
+                if (isAudioEnabled) {
+                    stopTrollAudio();
+                } else {
+                    isAudioEnabled = true;
+                    if (btnAudio) btnAudio.classList.add('active');
+                    if (trollAudio) {
+                        trollAudio.currentTime = 0;
+                        startTrollAudio();
+                    }
+                }
+            });
+        }
+
+        /* ==============================================================
            NÚT QUAY LẠI TRANG BÁNH KEM 3D: CHUYỂN TRANG LÙI MƯỢT MÀ, KHÔNG CHỚP GIẬT
            ============================================================== */
         const btnBackHome = document.getElementById('btnBackHome');
         if (btnBackHome) {
             btnBackHome.addEventListener('click', (e) => {
                 e.preventDefault();
+                stopTrollAudio();
                 playTone(480, 0.08, 'sine'); // Âm thanh nhẹ êm dịu
 
                 // Đánh dấu để trang bánh kem hiển thị trọn vẹn 100% ngay từ frame đầu tiên
@@ -720,6 +841,7 @@
            ============================================================== */
         if (btnIntroOk) {
             btnIntroOk.addEventListener('click', () => {
+                startTrollAudio();
                 playSuccess();
                 setTrollState('question');
                 screenQuestion.style.animation = 'none';
