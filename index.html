@@ -1,0 +1,2381 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎂 Chúc Mừng Sinh Nhật Anh Bảo 🎉</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <script>
+        // KIỂM TRA ĐỒNG BỘ TRƯỚC KHI BROWSER RENDER BODY: NẾU ĐÃ MỞ BÁNH KEM, TRIỆT TIÊU 100% GIẬT MÀN HÌNH
+        (function() {
+            try {
+                var hasCakeTarget = window.location.hash === '#cake' ||
+                                    window.location.search.indexOf('cake') !== -1 ||
+                                    window.location.search.indexOf('skip') !== -1;
+                var isUnlockedSession = sessionStorage.getItem('birthday_unlocked') === 'true' ||
+                                        sessionStorage.getItem('skip_countdown') === 'true';
+                if (hasCakeTarget && isUnlockedSession) {
+                    document.documentElement.classList.add('direct-cake-mode');
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <style>
+        /* KHI VÀO TRANG BÁNH KEM / RELOAD TRANG:
+           TRIỆT TIÊU 100% HIỆN TƯỢNG GIẬT / CHỚP NÚT BẮT ĐẦU VÀ KHÓA CAPTCHA */
+        html.direct-cake-mode #landingScreen,
+        html.direct-cake-mode #lockModal {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: none !important;
+            animation: none !important;
+            transition: none !important;
+        }
+
+        html.direct-cake-mode #cakeScreen {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            transition: none !important;
+        }
+
+        html.direct-cake-mode .cake-header,
+        html.direct-cake-mode .top-controls {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            transition: none !important;
+            pointer-events: auto !important;
+        }
+
+        html.direct-cake-mode .bottom-action-bar {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateX(-50%) !important;
+            transition: none !important;
+            pointer-events: auto !important;
+        }
+        html.direct-cake-mode body {
+            animation: cakePageSmoothEnter 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes cakePageSmoothEnter {
+            0% {
+                opacity: 0;
+                transform: scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        :root {
+            --primary: #ff4081;
+            --primary-glow: rgba(255, 64, 129, 0.6);
+            --gold: #ffd700;
+            --gold-glow: rgba(255, 215, 0, 0.5);
+            --dark-bg: #090a16;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: #fff;
+            user-select: none;
+        }
+
+        /* ===== BACKGROUND AMBIENCE ===== */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a102f 0%, #0c0817 60%, #05040a 100%);
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+
+
+        /* ===== SCREEN 1: LANDING (ONLY ONE START BUTTON) ===== */
+        #landingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .start-btn-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .start-glow-ring {
+            position: absolute;
+            width: 240px;
+            height: 90px;
+            border-radius: 999px;
+            background: linear-gradient(45deg, #ff007f, #7928ca, #ff007f);
+            filter: blur(25px);
+            opacity: 0.7;
+            animation: rotateGlow 4s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: scale(0.95); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+            100% { transform: scale(0.95); opacity: 0.6; }
+        }
+
+        .btn-start {
+            position: relative;
+            z-index: 2;
+            padding: 18px 48px;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 12px 35px rgba(255, 65, 108, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 18px 45px rgba(255, 65, 108, 0.7), inset 0 2px 6px rgba(255, 255, 255, 0.7);
+        }
+
+        .btn-start:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .start-hint {
+            margin-top: 24px;
+            font-size: clamp(0.88rem, 2.8vw, 1rem);
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.5px;
+            text-align: center;
+            width: 100%;
+            max-width: 320px;
+            line-height: 1.5;
+            padding: 0 16px;
+            animation: fadeInOut 2.5s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.9; }
+        }
+
+        /* ===== MODAL: PADLOCK LOCK SCREEN ===== */
+        #lockModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 4, 10, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            padding: 20px;
+        }
+
+        #lockModal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lock-card {
+            background: rgba(25, 20, 42, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: clamp(20px, 4.5vw, 28px);
+            padding: clamp(20px, 4vh, 35px) clamp(16px, 4vw, 30px);
+            max-width: min(430px, calc(100vw - 24px));
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 64, 129, 0.2);
+            position: relative;
+            transform: scale(0.85) translateY(20px);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            max-height: 94vh;
+            max-height: 94dvh;
+            overflow-y: auto;
+        }
+
+        #lockModal.active .lock-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .lock-card.shake {
+            animation: shakeCard 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+            box-shadow: 0 0 50px rgba(255, 30, 30, 0.6);
+            border-color: rgba(255, 50, 50, 0.6);
+        }
+
+        @keyframes shakeCard {
+            10%, 90% { transform: translate3d(-3px, 0, 0); }
+            20%, 80% { transform: translate3d(5px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Padlock Icon SVG */
+        .padlock-wrapper {
+            margin: 10px auto 18px;
+            width: 90px;
+            height: 98px;
+            position: relative;
+        }
+
+        .padlock-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            filter: drop-shadow(0 8px 20px rgba(255, 215, 0, 0.45));
+        }
+
+        .padlock-shackle {
+            transform-box: view-box;
+            transform-origin: 28px 55px;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .padlock-svg.unlocked .padlock-shackle {
+            transform: translateY(-15px) rotate(-32deg);
+        }
+
+        .lock-title {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .lock-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        /* PIN Display Boxes */
+        .pin-boxes {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(3px, 1.2vw, 6px);
+            margin-bottom: clamp(10px, 2vh, 15px);
+            width: 100%;
+        }
+
+        .pin-separator {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: clamp(1.1rem, 3.2vw, 1.4rem);
+            align-self: center;
+            font-weight: 300;
+            margin: 0 1px;
+        }
+
+        .pin-box {
+            width: clamp(26px, 7.5vw, 36px);
+            height: clamp(38px, 9vw, 48px);
+            border-radius: clamp(8px, 2vw, 10px);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            color: #ffd700;
+            font-size: clamp(1.15rem, 3.6vw, 1.5rem);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
+        }
+
+        .pin-box.active {
+            border-color: #ff4081;
+            box-shadow: 0 0 12px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        .pin-box.filled {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .lock-feedback {
+            min-height: 24px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            color: #ff5252;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .lock-feedback.success {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        /* Number Keypad */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(6px, 1.8vw, 10px);
+            max-width: clamp(230px, 68vw, 280px);
+            margin: 0 auto;
+        }
+
+        .key-btn {
+            height: clamp(40px, 8.5vh, 48px);
+            border-radius: clamp(10px, 2vw, 12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: clamp(1.1rem, 3.8vw, 1.25rem);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .key-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .key-btn:active {
+            transform: scale(0.95);
+            background: var(--primary);
+        }
+
+        .key-btn.action-btn {
+            font-size: 1rem;
+            background: rgba(255, 64, 129, 0.2);
+            border-color: rgba(255, 64, 129, 0.3);
+        }
+
+        .key-btn.unlock-btn {
+            background: linear-gradient(45deg, #ffd700, #ff9800);
+            color: #1a102f;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(255, 215, 0, 0.3);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .key-btn.unlock-btn.ready {
+            background: linear-gradient(45deg, #ffe066, #ff9800) !important;
+            box-shadow: 0 0 16px rgba(255, 215, 0, 0.85), 0 0 28px rgba(255, 152, 0, 0.6) !important;
+            animation: pulseUnlockReady 1s infinite alternate ease-in-out !important;
+        }
+
+        @keyframes pulseUnlockReady {
+            0% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            100% {
+                transform: scale(1.08);
+                filter: brightness(1.22);
+            }
+        }
+
+        .lock-feedback.ready-prompt {
+            color: #ffe066 !important;
+            font-weight: 600 !important;
+            text-shadow: 0 0 8px rgba(255, 224, 102, 0.5);
+            animation: promptGlow 1.2s infinite alternate ease-in-out;
+        }
+
+        @keyframes promptGlow {
+            0% { opacity: 0.85; }
+            100% { opacity: 1; }
+        }
+
+        #hiddenInput {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* ===== SCREEN 2: 3D PARTICLE CAKE ===== */
+        #cakeScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #cakeScreen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #webglCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* 3D UI Overlays */
+        .cake-header {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            padding: 0 20px;
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .cake-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef, #ffd1ff, #a1c4fd);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShine 5s ease infinite;
+            filter: drop-shadow(0 4px 15px rgba(255, 105, 180, 0.4));
+            margin-bottom: 2px;
+        }
+
+        @keyframes gradientShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .cake-subtitle {
+            font-size: clamp(0.75rem, 2vw, 0.95rem);
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Floating Top Controls */
+        .top-controls {
+            position: absolute;
+            top: 16px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 20;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 12px;
+            pointer-events: auto;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(20, 15, 35, 0.65);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 1.15rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 64, 129, 0.7);
+            transform: scale(1.08);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .icon-btn.active {
+            background: linear-gradient(135deg, #ff4081, #e91e63);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Bottom Floating Bar */
+        .bottom-action-bar {
+            position: absolute;
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 2.5vw, 15px);
+            z-index: 20;
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            width: auto;
+            max-width: min(420px, calc(100vw - 24px));
+            box-sizing: border-box;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        /* Ẩn thanh nút hành động khi mở thiệp chúc mừng để tránh bị lộ hay lệch */
+        body.wish-modal-open .bottom-action-bar,
+        #wishModal.active ~ #cakeScreen .bottom-action-bar,
+        #wishModal.active ~ .bottom-action-bar {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
+        }
+
+        .btn-surprise {
+            background: linear-gradient(135deg, #ff4081, #7c4dff) !important;
+            color: #fff !important;
+            box-shadow: 0 6px 20px rgba(255, 64, 129, 0.45) !important;
+        }
+
+        .btn-surprise:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 10px 28px rgba(124, 77, 255, 0.7) !important;
+        }
+
+        .action-pill-btn {
+            padding: clamp(10px, 1.8vh, 13px) clamp(20px, 4.5vw, 34px);
+            border-radius: 999px;
+            border: none;
+            font-size: clamp(0.92rem, 2.8vw, 1.05rem);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1a102f;
+            background: linear-gradient(135deg, #ffd700, #ff9800);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+        }
+
+        .action-pill-btn:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 10px 28px rgba(255, 215, 0, 0.7);
+        }
+
+        .action-pill-btn:disabled, .action-pill-btn.disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+            pointer-events: none;
+            background: #555;
+            color: #bbb;
+        }
+
+        /* ===== MODAL: HEARTFELT WISH CARD ===== */
+        #wishModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 4, 18, 0.68);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 150;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: clamp(12px, 3vh, 20px);
+        }
+
+        #wishModal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .wish-card {
+            background: linear-gradient(145deg, rgba(35, 22, 55, 0.97), rgba(20, 14, 38, 0.97));
+            border: 1px solid rgba(255, 105, 180, 0.4);
+            border-radius: clamp(20px, 4.5vw, 30px);
+            padding: clamp(22px, 4vh, 40px) clamp(18px, 4vw, 32px);
+            max-width: min(480px, calc(100vw - 28px));
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 64, 129, 0.35);
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 92vh;
+            max-height: 92dvh;
+            overflow-y: auto;
+        }
+
+        #wishModal.active .wish-card {
+            transform: scale(1);
+        }
+
+        .wish-avatar-wrapper {
+            margin: 0 auto clamp(8px, 1.8vh, 14px);
+            width: clamp(75px, 18vw, 100px);
+            height: clamp(75px, 18vw, 100px);
+            position: relative;
+        }
+
+        .wish-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+            border: 2.5px solid rgba(255, 215, 0, 0.75);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.35);
+        }
+
+        .wish-header-icon {
+            font-size: clamp(2.4rem, 6vw, 3.2rem);
+            margin-bottom: clamp(6px, 1.5vh, 12px);
+            animation: bounceIcon 2s infinite;
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .wish-card-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 5.5vw, 2.6rem);
+            color: #ffd700;
+            margin-bottom: clamp(8px, 1.5vh, 15px);
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
+        }
+
+        .wish-card-text {
+            font-size: clamp(0.92rem, 2.6vw, 1.05rem);
+            line-height: 1.7;
+            color: #f1f1f1;
+            margin-bottom: clamp(14px, 2.5vh, 25px);
+            font-style: italic;
+        }
+
+        .wish-sender {
+            font-weight: 700;
+            color: #ff80ab;
+            font-size: clamp(0.9rem, 2.4vw, 1rem);
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .btn-close-wish {
+            padding: clamp(10px, 2vh, 13px) clamp(28px, 6vw, 40px);
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(45deg, #ff4081, #ff6b6b);
+            color: #fff;
+            font-weight: 700;
+            font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 64, 129, 0.5);
+            transition: all 0.25s ease;
+        }
+
+        .btn-close-wish:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(255, 64, 129, 0.7);
+        }
+
+        /* RESPONSIVE DESIGN - ĐIỆN THOẠI DI ĐỘNG (<600px) */
+        @media (max-width: 600px) {
+            .top-controls {
+                padding: 0 10px;
+                top: 10px;
+            }
+            .icon-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+            .cake-header {
+                padding: 0 46px;
+                top: 10px;
+            }
+            .cake-title {
+                font-size: clamp(1.12rem, 4.6vw, 1.58rem);
+                line-height: 1.25;
+                white-space: nowrap;
+            }
+            .cake-subtitle {
+                font-size: clamp(0.62rem, 2.4vw, 0.76rem);
+                letter-spacing: 0.5px;
+                white-space: normal;
+                line-height: 1.4;
+                max-width: 240px;
+                margin: 0 auto;
+                text-transform: none;
+            }
+            .pin-box {
+                width: 29px;
+                height: 41px;
+                font-size: 1.22rem;
+            }
+            .pin-boxes {
+                gap: 3px;
+            }
+            .lock-card {
+                padding: 22px 14px;
+            }
+            .key-btn {
+                height: 42px;
+                font-size: 1.12rem;
+            }
+            .bottom-action-bar {
+                bottom: max(16px, env(safe-area-inset-bottom, 16px));
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                width: 100%;
+                max-width: min(340px, calc(100vw - 20px));
+                gap: 10px;
+                justify-content: center;
+            }
+            .action-pill-btn {
+                flex: 1 1 0;
+                min-width: 0;
+                max-width: 160px;
+                padding: 10px 12px;
+                font-size: clamp(0.82rem, 2.6vw, 0.92rem);
+                gap: 6px;
+                justify-content: center;
+                text-align: center;
+            }
+            .wish-card {
+                padding: clamp(16px, 3vh, 24px) clamp(14px, 3vw, 20px);
+                border-radius: 20px;
+            }
+            .wish-card-title {
+                font-size: clamp(1.8rem, 6vw, 2.2rem);
+                margin-bottom: 8px;
+            }
+            .wish-card-text {
+                font-size: clamp(0.85rem, 2.7vw, 0.95rem);
+                line-height: 1.6;
+                margin-bottom: 16px;
+            }
+            .wish-avatar-wrapper {
+                width: clamp(65px, 16vw, 85px);
+                height: clamp(65px, 16vw, 85px);
+                margin-bottom: 8px;
+            }
+            .btn-close-wish {
+                padding: 9px 30px;
+                font-size: 0.92rem;
+            }
+        }
+
+        /* MÀN HÌNH ĐIỆN THOẠI CỰC NHỎ (<375px) */
+        @media (max-width: 375px) {
+            .cake-header {
+                padding: 0 38px;
+                top: 8px;
+            }
+            .cake-title {
+                font-size: clamp(1.02rem, 4.4vw, 1.25rem);
+            }
+            .cake-subtitle {
+                font-size: clamp(0.5rem, 2vw, 0.62rem);
+                letter-spacing: 0.2px;
+            }
+            .pin-box {
+                width: 26px;
+                height: 38px;
+                font-size: 1.1rem;
+            }
+            .key-btn {
+                height: 40px;
+                font-size: 1.05rem;
+            }
+            .bottom-action-bar {
+                bottom: 12px;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                max-width: calc(100vw - 16px);
+                gap: 8px;
+            }
+            .action-pill-btn {
+                padding: 9px 8px;
+                font-size: 0.8rem;
+                gap: 4px;
+            }
+        }
+
+        /* RESPONSIVE DESIGN - IPAD & TABLET (601px - 1024px) */
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .lock-card {
+                max-width: 440px;
+                padding: 32px 26px;
+            }
+            .key-btn {
+                height: 48px;
+                font-size: 1.25rem;
+            }
+            .bottom-action-bar {
+                bottom: 26px;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                gap: 16px;
+            }
+            .action-pill-btn {
+                padding: 12px 28px;
+                font-size: 1.02rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AMBIENT BACKGROUND GLOW -->
+    <div class="ambient-bg"></div>
+
+    <!-- AUDIO ELEMENTS -->
+    <audio id="bgMusic" src="Happy Birthday To You (Tiếng Hàn).mp3" loop preload="auto"></audio>
+    <audio id="wishAudio" src="vivibe_export_1789056507432.mp3" preload="auto"></audio>
+
+    <!-- ===== SCREEN 1: LANDING SCREEN WITH ONLY 1 START BUTTON ===== -->
+    <div id="landingScreen">
+        <div class="start-btn-wrapper">
+            <div class="start-glow-ring"></div>
+            <button id="btnStart" class="btn-start">
+                <span>✨ Bắt đầu ✨</span>
+            </button>
+        </div>
+        <div class="start-hint">Chạm để mở món quà đặc biệt dành riêng cho bạn</div>
+    </div>
+
+    <!-- ===== PADLOCK MODAL ===== -->
+    <div id="lockModal">
+        <div class="lock-card" id="lockCard">
+            <button class="close-modal-btn" id="btnCloseLock">✕</button>
+            
+            <!-- Padlock Animated SVG -->
+            <div class="padlock-wrapper">
+                <svg class="padlock-svg" id="padlockSvg" viewBox="-20 -20 140 145">
+                    <!-- Shackle (càng khóa) -->
+                    <path class="padlock-shackle" id="padlockShackle" 
+                          d="M 28 55 V 30 A 22 22 0 0 1 72 30 V 55" 
+                          fill="none" stroke="#ffd700" stroke-width="12" stroke-linecap="round"/>
+                    <!-- Body (thân khóa) -->
+                    <rect class="padlock-body" x="14" y="48" width="72" height="62" rx="16" 
+                          fill="url(#goldGrad)" stroke="#fff" stroke-width="2"/>
+                    <!-- Keyhole -->
+                    <circle cx="50" cy="74" r="6" fill="#1a102f"/>
+                    <path d="M 47 75 L 53 75 L 55 92 L 45 92 Z" fill="#1a102f"/>
+                    
+                    <defs>
+                        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ffe259"/>
+                            <stop offset="100%" stop-color="#ffa751"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+
+            <h2 class="lock-title">Ổ Khóa Sinh Nhật</h2>
+            <p class="lock-subtitle">Nhập đúng <strong>ngày tháng năm sinh</strong> của anh Bảo để mở khóa món quà</p>
+
+            <!-- PIN Display Boxes (DD / MM / YYYY) -->
+            <div class="pin-boxes" id="pinDisplay">
+                <div class="pin-box" data-idx="0"></div>
+                <div class="pin-box" data-idx="1"></div>
+                <div class="pin-separator">/</div>
+                <div class="pin-box" data-idx="2"></div>
+                <div class="pin-box" data-idx="3"></div>
+                <div class="pin-separator">/</div>
+                <div class="pin-box" data-idx="4"></div>
+                <div class="pin-box" data-idx="5"></div>
+                <div class="pin-box" data-idx="6"></div>
+                <div class="pin-box" data-idx="7"></div>
+            </div>
+
+            <div class="lock-feedback" id="lockFeedback">Gợi ý: Định dạng ngày tháng năm sinh 8 chữ số</div>
+
+            <!-- Virtual Keypad -->
+            <div class="keypad">
+                <button class="key-btn" data-val="1">1</button>
+                <button class="key-btn" data-val="2">2</button>
+                <button class="key-btn" data-val="3">3</button>
+                <button class="key-btn" data-val="4">4</button>
+                <button class="key-btn" data-val="5">5</button>
+                <button class="key-btn" data-val="6">6</button>
+                <button class="key-btn" data-val="7">7</button>
+                <button class="key-btn" data-val="8">8</button>
+                <button class="key-btn" data-val="9">9</button>
+                <button class="key-btn action-btn" id="keyDelete">⌫</button>
+                <button class="key-btn" data-val="0">0</button>
+                <button class="key-btn action-btn unlock-btn" id="keySubmit">🔓</button>
+            </div>
+
+            <input type="text" id="hiddenInput" maxlength="10" inputmode="numeric" autocomplete="off">
+        </div>
+    </div>
+
+    <!-- ===== SCREEN 2: 3D PARTICLE CAKE ===== -->
+    <div id="cakeScreen">
+        <canvas id="webglCanvas"></canvas>
+
+        <!-- Top Controls -->
+        <div class="top-controls">
+            <div class="control-group">
+                <button class="icon-btn active" id="btnAudio" title="Bật / Tắt Nhạc">🎵</button>
+            </div>
+            <div class="control-group">
+                <button class="icon-btn" id="btnFullscreen" title="Toàn màn hình">⤢</button>
+            </div>
+        </div>
+
+        <!-- Header Titles -->
+        <div class="cake-header">
+            <h1 class="cake-title">Happy Birthday Anh Bảo</h1>
+            <p class="cake-subtitle">✨ Tuổi mới rực rỡ, ngập tràn niềm vui & hạnh phúc ✨</p>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="bottom-action-bar">
+            <button class="action-pill-btn btn-surprise" id="btnSurprise" title="Bất ngờ">
+                <span>🎁</span> Bất Ngờ
+            </button>
+            <button class="action-pill-btn" id="btnBlowCandles">
+                <span>🕯️</span> Thổi Nến
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL: HEARTFELT WISH CARD ===== -->
+    <div id="wishModal">
+        <div class="wish-card">
+            <button class="close-modal-btn" id="btnCloseWish" title="Đóng">✕</button>
+            <div class="wish-avatar-wrapper">
+                <img src="1789055604389_6636310689048689903_6636310689048689903_1c846c667436c809c48bcfb169519d9d.jpg" alt="Anh Bảo" class="wish-avatar-img">
+            </div>
+            <h2 class="wish-card-title">Gửi Anh Bảo!</h2>
+            <p class="wish-card-text">
+                "Chúc mừng sinh nhật anh Bảo! Happy Birthday tuổi mới bớt gay, tuổi mới sống thọ càng lọ càng sung, sinh nhật vui vẻ tiền lẻ cho em. Tâm an vạn sự an, tâm lành vạn sự lành, tâm thiện sống dài lâu=))). Chúc cho mọi dự định, ước mơ của anh Bảo đều sớm thành hiện thực, luôn may mắn, bình an và hạnh phúc bên những người thân thương nhất nha!!"
+            </p>
+            <div class="wish-sender">🎉 Happy Birthday 11/09 🎉</div>
+        </div>
+    </div>
+
+    <!-- EXTERNAL LIBRARIES -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.136.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- MAIN LOGIC SCRIPT -->
+    <script>
+        /* ==========================================================================
+           CONFIG & CONSTANTS
+           ========================================================================== */
+        // Ngày sinh anh Bảo: 11 / 09 / 2001
+        const CORRECT_PIN = "11092001";
+        let enteredPin = "";
+        let isUnlocked = false;
+
+        let scene, camera, renderer, controls;
+        let cakeGroup;
+        let cakePoints, flamePoints, starPoints;
+        let cakePositions = [], targetPositions = [];
+        let flamePositions = [], originalFlamePositions = [];
+        let isCandlesLit = true;
+        let autoRotate = true;
+        let clock = new THREE.Clock();
+        let cakeColorsArray = [];
+
+        /* ==========================================================================
+           SOUND SYNTHESIZER
+           ========================================================================== */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playBeep(freq = 600, duration = 0.08, type = 'sine') {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (_) {}
+        }
+
+        function playUnlockChime() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((note, i) => {
+                    setTimeout(() => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(note, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + 0.4);
+                    }, i * 110);
+                });
+            } catch (_) {}
+        }
+
+        function playCountdownBeep(num) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const freqs = { 1: 440, 2: 554.37, 3: 659.25 }; // Note A4, C#5, E5
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freqs[num] || 500, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            } catch (_) {}
+        }
+
+        function playFireworkExplosionSound() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(130, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.6);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.6);
+
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    setTimeout(() => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.type = 'triangle';
+                        o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                        g.gain.setValueAtTime(0.18, audioCtx.currentTime);
+                        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.start();
+                        o.stop(audioCtx.currentTime + 0.5);
+                    }, idx * 60);
+                });
+            } catch (_) {}
+        }
+
+        /* ==========================================================================
+           AUDIO MANAGER
+           ========================================================================== */
+        const bgMusic = document.getElementById('bgMusic');
+        let isMusicPlaying = false;
+        let wasPlayingBeforeWish = false;
+
+        function startBackgroundMusic() {
+            if (!bgMusic) return;
+            bgMusic.volume = 0.85;
+            const playPromise = bgMusic.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isMusicPlaying = true;
+                    btnAudio.classList.add('active');
+                }).catch(() => {
+                    isMusicPlaying = false;
+                    btnAudio.classList.remove('active');
+                });
+            }
+        }
+
+        const btnAudio = document.getElementById('btnAudio');
+        btnAudio.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                btnAudio.classList.remove('active');
+                wasPlayingBeforeWish = false;
+            } else {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    btnAudio.classList.add('active');
+                });
+            }
+        });
+
+        /* ==========================================================================
+           PADLOCK & PIN INTERACTION
+           ========================================================================== */
+        const landingScreen = document.getElementById('landingScreen');
+        const btnStart = document.getElementById('btnStart');
+        const lockModal = document.getElementById('lockModal');
+        const lockCard = document.getElementById('lockCard');
+        const btnCloseLock = document.getElementById('btnCloseLock');
+        const padlockSvg = document.getElementById('padlockSvg');
+        const lockFeedback = document.getElementById('lockFeedback');
+        const pinBoxes = document.querySelectorAll('.pin-box');
+        const hiddenInput = document.getElementById('hiddenInput');
+
+        // ĐÁNH DẤU ĐÃ TỪNG MỞ INDEX.HTML ĐỂ TRANG TROLL BIẾT QUAY VỀ
+        sessionStorage.setItem('opened_index', 'true');
+
+        // NẾU ĐÃ MỞ KHÓA TRƯỚC ĐÓ VÀ CÓ HASH #cake / QUERY THÌ VÀO THẲNG BÁNH KEM 3D (VD QUAY LẠI TỪ TROLL)
+        const hasCakeParam = window.location.hash === '#cake' ||
+                             window.location.search.includes('cake') ||
+                             window.location.search.includes('skip');
+        const isUnlockedSession = sessionStorage.getItem('birthday_unlocked') === 'true' ||
+                                  sessionStorage.getItem('skip_countdown') === 'true';
+
+        const isDirectCakeEntry = hasCakeParam && isUnlockedSession;
+
+        if (isDirectCakeEntry) {
+            isUnlocked = true;
+            document.documentElement.classList.add('direct-cake-mode');
+            if (landingScreen) {
+                landingScreen.style.display = 'none';
+                landingScreen.style.opacity = '0';
+                landingScreen.style.pointerEvents = 'none';
+            }
+            if (lockModal) {
+                lockModal.classList.remove('active');
+                lockModal.style.display = 'none';
+            }
+            enterCakeWorld(true);
+        }
+
+        btnStart.addEventListener('click', () => {
+            playBeep(700, 0.08);
+            lockModal.classList.add('active');
+            hiddenInput.focus();
+        });
+
+        btnCloseLock.addEventListener('click', () => {
+            playBeep(400, 0.06);
+            lockModal.classList.remove('active');
+        });
+
+        lockModal.addEventListener('click', (e) => {
+            if (e.target === lockModal) {
+                lockModal.classList.remove('active');
+            }
+        });
+
+        function updatePinDisplay() {
+            pinBoxes.forEach((box, i) => {
+                if (i < enteredPin.length) {
+                    box.textContent = enteredPin[i];
+                    box.classList.add('filled');
+                    box.classList.remove('active');
+                } else if (i === enteredPin.length) {
+                    box.textContent = '';
+                    box.classList.remove('filled');
+                    box.classList.add('active');
+                } else {
+                    box.textContent = '';
+                    box.classList.remove('filled');
+                    box.classList.remove('active');
+                }
+            });
+        }
+
+        function handlePinInput(val) {
+            if (enteredPin.length < 8) {
+                playBeep(500 + enteredPin.length * 60, 0.05);
+                enteredPin += val;
+                updatePinDisplay();
+
+                const submitBtn = document.getElementById('keySubmit');
+                if (enteredPin.length === 8) {
+                    lockFeedback.textContent = "Đã nhập đủ 8 số! Nhấn nút 🔓 để mở khóa";
+                    lockFeedback.className = "lock-feedback ready-prompt";
+                    if (submitBtn) submitBtn.classList.add('ready');
+                } else {
+                    lockFeedback.textContent = "Nhập ngày tháng năm sinh (DDMMYYYY)";
+                    lockFeedback.className = "lock-feedback";
+                    if (submitBtn) submitBtn.classList.remove('ready');
+                }
+            }
+        }
+
+        function deletePinDigit() {
+            if (enteredPin.length > 0) {
+                playBeep(350, 0.05);
+                enteredPin = enteredPin.slice(0, -1);
+                updatePinDisplay();
+                const submitBtn = document.getElementById('keySubmit');
+                if (enteredPin.length === 8) {
+                    lockFeedback.textContent = "Đã nhập đủ 8 số! Nhấn nút 🔓 để mở khóa";
+                    lockFeedback.className = "lock-feedback ready-prompt";
+                    if (submitBtn) submitBtn.classList.add('ready');
+                } else {
+                    lockFeedback.textContent = "Nhập ngày tháng năm sinh (DDMMYYYY)";
+                    lockFeedback.className = "lock-feedback";
+                    if (submitBtn) submitBtn.classList.remove('ready');
+                }
+            }
+        }
+
+        function validatePin() {
+            const cleanPin = enteredPin.replace(/\D/g, '');
+            const submitBtn = document.getElementById('keySubmit');
+            if (submitBtn) submitBtn.classList.remove('ready');
+
+            if (cleanPin === CORRECT_PIN) {
+                isUnlocked = true;
+                sessionStorage.setItem('birthday_unlocked', 'true');
+                sessionStorage.removeItem('skip_countdown');
+
+                playUnlockChime();
+                padlockSvg.classList.add('unlocked');
+                lockFeedback.textContent = "🎉 Mở khóa thành công! Chuẩn bị nhận quà...";
+                lockFeedback.className = "lock-feedback success";
+
+                setTimeout(() => {
+                    lockModal.classList.remove('active');
+                    landingScreen.style.opacity = '0';
+                    landingScreen.style.pointerEvents = 'none';
+
+                    setTimeout(() => {
+                        landingScreen.style.display = 'none';
+                        document.documentElement.classList.remove('direct-cake-mode');
+                        enterCakeWorld(false);
+                    }, 400);
+                }, 500);
+
+            } else {
+                playBeep(200, 0.25, 'sawtooth');
+                lockCard.classList.remove('shake');
+                void lockCard.offsetWidth;
+                lockCard.classList.add('shake');
+
+                lockFeedback.textContent = "Sai mật khẩu rồi nè! Thử lại ngày sinh của anh Bảo nha ❤️";
+                lockFeedback.className = "lock-feedback";
+
+                setTimeout(() => {
+                    enteredPin = "";
+                    updatePinDisplay();
+                }, 1200);
+            }
+        }
+
+        document.querySelectorAll('.key-btn[data-val]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                handlePinInput(btn.dataset.val);
+            });
+        });
+
+        document.getElementById('keyDelete').addEventListener('click', deletePinDigit);
+
+        document.getElementById('keySubmit').addEventListener('click', () => {
+            if (enteredPin.length === 8) {
+                validatePin();
+            } else {
+                playBeep(200, 0.15, 'sawtooth');
+                lockCard.classList.remove('shake');
+                void lockCard.offsetWidth;
+                lockCard.classList.add('shake');
+                lockFeedback.textContent = "Vui lòng nhập đủ 8 chữ số ngày tháng năm sinh nha!";
+                lockFeedback.className = "lock-feedback";
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lockModal.classList.contains('active') || isUnlocked) return;
+            if (e.key >= '0' && e.key <= '9') {
+                handlePinInput(e.key);
+            } else if (e.key === 'Backspace') {
+                deletePinDigit();
+            } else if (e.key === 'Enter') {
+                if (enteredPin.length === 8) {
+                    validatePin();
+                } else {
+                    playBeep(200, 0.15, 'sawtooth');
+                    lockCard.classList.remove('shake');
+                    void lockCard.offsetWidth;
+                    lockCard.classList.add('shake');
+                    lockFeedback.textContent = "Vui lòng nhập đủ 8 chữ số ngày tháng năm sinh nha!";
+                    lockFeedback.className = "lock-feedback";
+                }
+            }
+        });
+
+        /* ==========================================================================
+           FULLSCREEN TOGGLE
+           ========================================================================== */
+        const btnFullscreen = document.getElementById('btnFullscreen');
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+                btnFullscreen.textContent = "⤡";
+            } else {
+                document.exitFullscreen().catch(() => {});
+                btnFullscreen.textContent = "⤢";
+            }
+        }
+        btnFullscreen.addEventListener('click', toggleFullscreen);
+
+        /* ==========================================================================
+           WISH MODAL LOGIC (TẮT NHẠC KHI MỞ - ĐÓNG XONG MỚI CHO THẮP NẾN LẠI)
+           ========================================================================== */
+        const wishModal = document.getElementById('wishModal');
+        const btnCloseWish = document.getElementById('btnCloseWish');
+        const btnBlowCandles = document.getElementById('btnBlowCandles');
+        const wishAudio = document.getElementById('wishAudio');
+
+        function openWishCard() {
+            // TẮT NHẠC CỦA HÌNH NỀN BÁNH KEM KHI KHUNG LỜI CHÚC MỞ RA
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                btnAudio.classList.remove('active');
+                wasPlayingBeforeWish = true;
+            } else {
+                wasPlayingBeforeWish = false;
+            }
+
+            // PHÁT ÂM THANH LỜI CHÚC (vivibe_export_1789056507432.mp3)
+            if (wishAudio) {
+                wishAudio.currentTime = 0;
+                wishAudio.volume = 1.0;
+                wishAudio.play().catch(e => console.log("Audio play error:", e));
+            }
+
+            document.body.classList.add('wish-modal-open');
+            wishModal.classList.add('active');
+            playBeep(700, 0.08);
+        }
+
+        function closeWishCard() {
+            playBeep(450, 0.06);
+            document.body.classList.remove('wish-modal-open');
+            wishModal.classList.remove('active');
+
+            // DỪNG ÂM THANH LỜI CHÚC KHI ĐÓNG THIỆP
+            if (wishAudio) {
+                wishAudio.pause();
+                wishAudio.currentTime = 0;
+            }
+
+            // NGƯỜI DÙNG TẮT ĐI MỚI ĐƯỢC THẮP NẾN LẠI
+            if (!isCandlesLit) {
+                btnBlowCandles.disabled = false;
+                btnBlowCandles.classList.remove('disabled');
+                btnBlowCandles.innerHTML = "<span>🔥</span> Thắp Lại Nến";
+            }
+
+            // TIẾP TỤC BẬT LẠI NHẠC SAU KHI ĐÓNG THIỆP
+            if (wasPlayingBeforeWish) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    btnAudio.classList.add('active');
+                }).catch(() => {});
+            }
+        }
+
+        btnCloseWish.addEventListener('click', closeWishCard);
+        const btnBottomCloseWish = document.getElementById('btnBottomCloseWish');
+        if (btnBottomCloseWish) btnBottomCloseWish.addEventListener('click', closeWishCard);
+        wishModal.addEventListener('click', (e) => {
+            if (e.target === wishModal) closeWishCard();
+        });
+
+        /* ==========================================================================
+           3D THREE.JS PARTICLE BIRTHDAY CAKE
+           (THU NHỎ + ĐƯA LÊN CAO ĐỂ KHÔNG BỊ THANH NÚT THỔI NẾN CHE)
+           ========================================================================== */
+
+        function enterCakeWorld(skipCountdown = false) {
+            const cakeScreen = document.getElementById('cakeScreen');
+            cakeScreen.style.transition = skipCountdown ? 'none' : 'opacity 0.8s ease';
+            cakeScreen.classList.add('active');
+            cakeScreen.style.opacity = '1';
+            cakeScreen.style.pointerEvents = 'auto';
+            initThreeScene(skipCountdown);
+        }
+
+        function createParticleTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+
+            const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            gradient.addColorStop(0.2, 'rgba(255, 240, 245, 0.9)');
+            gradient.addColorStop(0.5, 'rgba(255, 105, 180, 0.45)');
+            gradient.addColorStop(1, 'rgba(255, 105, 180, 0)');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 64, 64);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function createFlameTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+
+            const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            gradient.addColorStop(0.25, 'rgba(255, 220, 50, 0.95)');
+            gradient.addColorStop(0.6, 'rgba(255, 100, 10, 0.5)');
+            gradient.addColorStop(1, 'rgba(255, 50, 0, 0)');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 64, 64);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function initThreeScene(skipCountdown = false) {
+            const canvas = document.getElementById('webglCanvas');
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(50, width / height, 1, 3000);
+            adjustCameraForScreen();
+
+            renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                antialias: true,
+                alpha: true
+            });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Controls quay quanh tâm y = 15 (vị trí chiếc bánh được nâng lên)
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxDistance = 900;
+            controls.minDistance = 180;
+            controls.target.set(0, 15, 0);
+            controls.autoRotate = autoRotate;
+            controls.autoRotateSpeed = 1.2;
+
+            // GROUP CHỨA CHIẾC BÁNH: THU NHỎ LẠI (0.78) VÀ NÂNG CAO LÊN (+15)
+            // ĐẢM BẢO KHÔNG BỊ PHẦN NÚT DƯỚI CHE MẤT BÁNH!
+            cakeGroup = new THREE.Group();
+            cakeGroup.scale.set(0.78, 0.78, 0.78);
+            cakeGroup.position.y = 15;
+            scene.add(cakeGroup);
+
+            build3DCakeParticles();
+            buildCandleFlames();
+            buildFloatingStars();
+
+            window.addEventListener('resize', onWindowResize);
+
+            // Mặc định bánh tự động xoay - Nhấn giữ chuột hoặc chạm tay để bánh đứng yên
+            canvas.addEventListener('pointerdown', () => {
+                controls.autoRotate = false;
+            });
+            window.addEventListener('pointerup', () => {
+                controls.autoRotate = true;
+            });
+            window.addEventListener('pointercancel', () => {
+                controls.autoRotate = true;
+            });
+
+            animate();
+            if (skipCountdown === true) {
+                showDirectCake();
+            } else if (skipCountdown === false) {
+                startCountdownSequence();
+            } else {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('skip') || sessionStorage.getItem('skip_countdown') === 'true' || window.location.hash === '#cake') {
+                    showDirectCake();
+                } else {
+                    startCountdownSequence();
+                }
+            }
+        }
+
+        function showDirectCake() {
+            const cakeHeader = document.querySelector('.cake-header');
+            const bottomBar = document.querySelector('.bottom-action-bar');
+            const topControls = document.querySelector('.top-controls');
+
+            if (cakeHeader) {
+                cakeHeader.style.opacity = '1';
+                cakeHeader.style.transform = 'none';
+                cakeHeader.style.transition = 'none';
+            }
+
+            if (bottomBar) {
+                bottomBar.style.opacity = '1';
+                bottomBar.style.transform = 'translateX(-50%)';
+                bottomBar.style.transition = 'none';
+                bottomBar.style.pointerEvents = 'auto';
+            }
+
+            if (topControls) {
+                topControls.style.opacity = '1';
+                topControls.style.transition = 'none';
+            }
+
+            if (flamePoints) {
+                flamePoints.visible = true;
+                flamePoints.scale.set(1, 1, 1);
+            }
+            isCandlesLit = true;
+
+            if (cakePoints) {
+                const posAttr = cakePoints.geometry.attributes.position;
+                const colAttr = cakePoints.geometry.attributes.color;
+                const curPos = posAttr.array;
+                const curCol = colAttr.array;
+                const cakeFinalPos = new Float32Array(targetPositions);
+                const cakeFinalCol = new Float32Array(cakeColorsArray);
+
+                for (let i = 0; i < curPos.length; i++) {
+                    curPos[i] = cakeFinalPos[i];
+                    curCol[i] = cakeFinalCol[i];
+                }
+                posAttr.needsUpdate = true;
+                colAttr.needsUpdate = true;
+            }
+
+            if (cakeGroup) {
+                const trans = getResponsiveCakeTransform();
+                cakeGroup.scale.set(trans.scale, trans.scale, trans.scale);
+                cakeGroup.position.y = trans.cakeY;
+            }
+
+            if (controls) controls.update();
+            if (renderer && scene && camera) {
+                renderer.render(scene, camera);
+            }
+
+            startBackgroundMusic();
+        }
+
+        function getResponsiveCakeTransform() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const aspect = width / height;
+
+            // Điện thoại thông minh (Phone Portrait)
+            if (width <= 600 || aspect < 0.65) {
+                return {
+                    scale: 0.65,
+                    cakeY: 20,
+                    camX: 0,
+                    camY: 28,
+                    camZ: 530
+                };
+            }
+            // iPad / Tablet (Portrait & Landscape vừa)
+            else if (width <= 1024 || aspect < 1.05) {
+                return {
+                    scale: 0.72,
+                    cakeY: 17,
+                    camX: 0,
+                    camY: 28,
+                    camZ: 490
+                };
+            }
+            // Laptop / Desktop rộng rãi
+            else {
+                return {
+                    scale: 0.78,
+                    cakeY: 15,
+                    camX: 0,
+                    camY: 30,
+                    camZ: 470
+                };
+            }
+        }
+
+        function adjustCameraForScreen() {
+            if (!camera) return;
+            const trans = getResponsiveCakeTransform();
+
+            if (cakeGroup) {
+                cakeGroup.scale.set(trans.scale, trans.scale, trans.scale);
+                cakeGroup.position.y = trans.cakeY;
+            }
+
+            camera.position.set(trans.camX, trans.camY, trans.camZ);
+            camera.lookAt(0, trans.cakeY, 0);
+
+            if (controls) {
+                controls.target.set(0, trans.cakeY, 0);
+                controls.maxDistance = 1200;
+                controls.minDistance = 160;
+                controls.update();
+            }
+        }
+
+        function onWindowResize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            adjustCameraForScreen();
+            renderer.setSize(width, height);
+        }
+
+        /* ==========================================================================
+           TẠO HÌNH CHIẾC BÁNH KEM 3D & 3 CÂY NẾN 3 MÀU KHÁC BIỆT HOÀN TOÀN
+           ========================================================================== */
+        function build3DCakeParticles() {
+            const positions = [];
+            const colors = [];
+            targetPositions = [];
+
+            const colorCakeBody = new THREE.Color(0xff4081);      // Hồng dâu đậm
+            const colorCreamLight = new THREE.Color(0xffb6c1);    // Hồng phấn pastel
+            const colorWhitePearl = new THREE.Color(0xffffff);    // Trắng ngọc trai
+            const colorGoldRim = new THREE.Color(0xffd700);       // Viền vàng kim
+
+            // 3 MÀU NẾN RIÊNG BIỆT KHÔNG TRÙNG NHAU:
+            const colorCandleLeft = new THREE.Color(0xd05ce3);    // Nến trái: Tím Lavender Neon
+            const colorCandleCenter = new THREE.Color(0x00e5ff);  // Nến giữa: Xanh Sky Cyan rực sáng
+            const colorCandleRight = new THREE.Color(0x00e676);   // Nến phải: Xanh Ngọc Lục Bảo tươi tắn
+
+            function addPoint(x, y, z, color, jitter = 2) {
+                const tx = x + (Math.random() - 0.5) * jitter;
+                const ty = y + (Math.random() - 0.5) * jitter;
+                const tz = z + (Math.random() - 0.5) * jitter;
+                targetPositions.push(tx, ty, tz);
+
+                if (isDirectCakeEntry) {
+                    positions.push(tx, ty, tz);
+                } else {
+                    const rx = (Math.random() - 0.5) * 1200;
+                    const ry = (Math.random() - 0.5) * 1200;
+                    const rz = (Math.random() - 0.5) * 1200;
+                    positions.push(rx, ry, rz);
+                }
+
+                const c = color.clone();
+                c.r += (Math.random() - 0.5) * 0.1;
+                c.g += (Math.random() - 0.5) * 0.1;
+                c.b += (Math.random() - 0.5) * 0.1;
+                colors.push(c.r, c.g, c.b);
+            }
+
+            // 1. ĐĨA ĐỰNG BÁNH (PLATE AT BOTTOM)
+            const plateRadius = 145;
+            for (let r = 110; r <= plateRadius; r += 2.5) {
+                const step = 0.04 * (110 / r);
+                for (let theta = 0; theta < Math.PI * 2; theta += step) {
+                    const x = Math.cos(theta) * r;
+                    const z = Math.sin(theta) * r;
+                    addPoint(x, -125 + (r - 110) * 0.1, z, colorGoldRim, 1.5);
+                }
+            }
+
+            // 2. TẦNG BÁNH DƯỚI (TIER 1)
+            const r1 = 110;
+            const h1_bottom = -120;
+            const h1_top = -40;
+
+            for (let y = h1_bottom; y <= h1_top; y += 3) {
+                const step = 0.038;
+                for (let theta = 0; theta < Math.PI * 2; theta += step) {
+                    const x = Math.cos(theta) * r1;
+                    const z = Math.sin(theta) * r1;
+                    const col = (y % 12 < 5) ? colorCreamLight : colorCakeBody;
+                    addPoint(x, y, z, col, 2.5);
+                }
+            }
+
+            for (let r = 72; r <= r1; r += 2.8) {
+                const step = 0.045 * (72 / r);
+                for (let theta = 0; theta < Math.PI * 2; theta += step) {
+                    const x = Math.cos(theta) * r;
+                    const z = Math.sin(theta) * r;
+                    addPoint(x, h1_top, z, colorCreamLight, 2);
+                }
+            }
+
+            for (let theta = 0; theta < Math.PI * 2; theta += 0.02) {
+                const wave = Math.sin(theta * 24) * 4;
+                const r = r1 + 3 + wave;
+                addPoint(Math.cos(theta) * r, h1_bottom + 3, Math.sin(theta) * r, colorWhitePearl, 2);
+            }
+
+            for (let theta = 0; theta < Math.PI * 2; theta += 0.02) {
+                const wave = Math.sin(theta * 20) * 4;
+                const r = r1 + 2 + wave;
+                addPoint(Math.cos(theta) * r, h1_top, Math.sin(theta) * r, colorWhitePearl, 2);
+            }
+
+            // 3. TẦNG BÁNH TRÊN (TIER 2)
+            const r2 = 70;
+            const h2_bottom = -40;
+            const h2_top = 40;
+
+            for (let y = h2_bottom; y <= h2_top; y += 3) {
+                const step = 0.048;
+                for (let theta = 0; theta < Math.PI * 2; theta += step) {
+                    const x = Math.cos(theta) * r2;
+                    const z = Math.sin(theta) * r2;
+                    const col = (y % 10 < 4) ? colorCreamLight : colorCakeBody;
+                    addPoint(x, y, z, col, 2.5);
+                }
+            }
+
+            for (let r = 0; r <= r2; r += 2.8) {
+                const step = (r === 0) ? Math.PI * 2 : 0.05 * (40 / Math.max(r, 10));
+                for (let theta = 0; theta < Math.PI * 2; theta += step) {
+                    const x = Math.cos(theta) * r;
+                    const z = Math.sin(theta) * r;
+                    addPoint(x, h2_top, z, colorCreamLight, 2);
+                }
+            }
+
+            for (let theta = 0; theta < Math.PI * 2; theta += 0.025) {
+                const dripLen = 14 + Math.sin(theta * 10) * 12 + Math.cos(theta * 5) * 5;
+                for (let dy = 0; dy <= dripLen; dy += 2) {
+                    const r = r2 + 2;
+                    addPoint(Math.cos(theta) * r, h2_top - dy, Math.sin(theta) * r, colorWhitePearl, 1.5);
+                }
+            }
+
+            const rosetteCount = 10;
+            for (let i = 0; i < rosetteCount; i++) {
+                const angle = (i / rosetteCount) * Math.PI * 2;
+                const cx = Math.cos(angle) * (r2 - 12);
+                const cz = Math.sin(angle) * (r2 - 12);
+                for (let p = 0; p < 25; p++) {
+                    const pr = Math.random() * 6;
+                    const pa = Math.random() * Math.PI * 2;
+                    addPoint(cx + Math.cos(pa) * pr, h2_top + 4 + Math.random() * 6, cz + Math.sin(pa) * pr, colorWhitePearl, 1);
+                }
+            }
+
+            // 4. 3 CÂY NẾN SINH NHẬT VỚI 3 MÀU KHÁC BIỆT HOÀN TOÀN
+            const candleConfigs = [
+                { x: 0, z: 0, r: 4.5, h: 48, col: colorCandleCenter }, // Giữa: Xanh Cyan
+                { x: -35, z: 0, r: 4, h: 40, col: colorCandleLeft },    // Trái: Tím Lavender
+                { x: 35, z: 0, r: 4, h: 40, col: colorCandleRight }     // Phải: Xanh Lục Bảo
+            ];
+
+            candleConfigs.forEach(c => {
+                for (let y = h2_top; y <= h2_top + c.h; y += 2) {
+                    for (let theta = 0; theta < Math.PI * 2; theta += 0.35) {
+                        const x = c.x + Math.cos(theta) * c.r;
+                        const z = c.z + Math.sin(theta) * c.r;
+                        addPoint(x, y, z, c.col, 1);
+                    }
+                }
+                for (let y = h2_top + c.h; y <= h2_top + c.h + 8; y += 1.5) {
+                    addPoint(c.x, y, c.z, colorWhitePearl, 0.5);
+                }
+            });
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 4.8,
+                map: createParticleTexture(),
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true,
+                depthWrite: false
+            });
+
+            cakePoints = new THREE.Points(geometry, material);
+            cakeGroup.add(cakePoints);
+
+            cakeColorsArray = colors;
+        }
+
+        /* ==========================================================================
+           TẠO HÌNH CÁC CHỮ SỐ 1 2 3 & PHÁO HOA BẰNG HẠT 3D (PARTICLES)
+           ========================================================================== */
+        function generateDigitPoints(digitStr, totalVertices) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, 256, 256);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 220px Montserrat, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(digitStr, 128, 130);
+
+            const imgData = ctx.getImageData(0, 0, 256, 256).data;
+            const valid = [];
+            for (let y = 0; y < 256; y += 2) {
+                for (let x = 0; x < 256; x += 2) {
+                    const idx = (y * 256 + x) * 4;
+                    if (imgData[idx] > 100) {
+                        valid.push({
+                            x: (x - 128) * 1.5,
+                            y: -(y - 128) * 1.5 + 15
+                        });
+                    }
+                }
+            }
+
+            const posArray = new Float32Array(totalVertices * 3);
+            const validLen = valid.length || 1;
+            for (let i = 0; i < totalVertices; i++) {
+                const p = valid[i % validLen] || { x: 0, y: 15 };
+                posArray[i * 3] = p.x + (Math.random() - 0.5) * 4;
+                posArray[i * 3 + 1] = p.y + (Math.random() - 0.5) * 4;
+                posArray[i * 3 + 2] = (Math.random() - 0.5) * 35;
+            }
+            return posArray;
+        }
+
+        function generateExplosionPoints(totalVertices) {
+            const posArray = new Float32Array(totalVertices * 3);
+            for (let i = 0; i < totalVertices; i++) {
+                const u = Math.random();
+                const v = Math.random();
+                const theta = u * 2.0 * Math.PI;
+                const phi = Math.acos(2.0 * v - 1.0);
+                const r = Math.cbrt(Math.random()) * 360 + 100;
+                const sinPhi = Math.sin(phi);
+                posArray[i * 3] = r * sinPhi * Math.cos(theta);
+                posArray[i * 3 + 1] = r * sinPhi * Math.sin(theta) + 15;
+                posArray[i * 3 + 2] = r * Math.cos(phi);
+            }
+            return posArray;
+        }
+
+        function getDigitColors(digit, totalVertices) {
+            const cols = new Float32Array(totalVertices * 3);
+            let baseColor;
+            if (digit === '1') {
+                baseColor = new THREE.Color(0x00e5ff); // Xanh Cyan
+            } else if (digit === '2') {
+                baseColor = new THREE.Color(0xffd700); // Vàng kim
+            } else if (digit === '3') {
+                baseColor = new THREE.Color(0xff1493); // Hồng neon
+            } else {
+                baseColor = new THREE.Color();
+            }
+
+            for (let i = 0; i < totalVertices; i++) {
+                if (digit === 'explosion') {
+                    baseColor.setHSL(Math.random(), 0.9, 0.65);
+                }
+                const c = baseColor.clone();
+                c.r += (Math.random() - 0.5) * 0.12;
+                c.g += (Math.random() - 0.5) * 0.12;
+                c.b += (Math.random() - 0.5) * 0.12;
+                cols[i * 3] = Math.max(0, Math.min(1, c.r));
+                cols[i * 3 + 1] = Math.max(0, Math.min(1, c.g));
+                cols[i * 3 + 2] = Math.max(0, Math.min(1, c.b));
+            }
+            return cols;
+        }
+
+        function startCountdownSequence() {
+            const cakeHeader = document.querySelector('.cake-header');
+            const bottomBar = document.querySelector('.bottom-action-bar');
+            const topControls = document.querySelector('.top-controls');
+            
+            if (cakeHeader) {
+                cakeHeader.style.opacity = '0';
+                cakeHeader.style.transform = 'translateY(-20px)';
+                cakeHeader.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            }
+
+            if (bottomBar) {
+                bottomBar.style.opacity = '0';
+                bottomBar.style.transform = 'translateX(-50%) translateY(30px)';
+                bottomBar.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                bottomBar.style.pointerEvents = 'none';
+            }
+
+            if (topControls) {
+                topControls.style.opacity = '0';
+                topControls.style.transition = 'opacity 0.8s ease';
+            }
+
+            if (flamePoints) {
+                flamePoints.visible = false;
+            }
+
+            const posAttr = cakePoints.geometry.attributes.position;
+            const colAttr = cakePoints.geometry.attributes.color;
+            const curPos = posAttr.array;
+            const curCol = colAttr.array;
+            const totalVertices = curPos.length / 3;
+
+            const digit1Pos = generateDigitPoints('1', totalVertices);
+            const digit2Pos = generateDigitPoints('2', totalVertices);
+            const digit3Pos = generateDigitPoints('3', totalVertices);
+            const explosionPos = generateExplosionPoints(totalVertices);
+            const cakeFinalPos = new Float32Array(targetPositions);
+            const cakeFinalCol = new Float32Array(cakeColorsArray);
+
+            const col1 = getDigitColors('1', totalVertices);
+            const col2 = getDigitColors('2', totalVertices);
+            const col3 = getDigitColors('3', totalVertices);
+            const colExp = getDigitColors('explosion', totalVertices);
+
+            const trans = (typeof getResponsiveCakeTransform === 'function') ? getResponsiveCakeTransform() : { scale: 0.78 };
+            const targetScale = trans.scale;
+            const startBounceScale = targetScale * 0.75;
+
+            // BƯỚC 1: SỐ 1 (0.0s - 1.0s)
+            for (let i = 0; i < curPos.length; i++) {
+                curPos[i] = digit1Pos[i];
+                curCol[i] = col1[i];
+            }
+            posAttr.needsUpdate = true;
+            colAttr.needsUpdate = true;
+            playCountdownBeep(1);
+
+            cakeGroup.scale.set(targetScale * 0.35, targetScale * 0.35, targetScale * 0.35);
+            gsap.to(cakeGroup.scale, {
+                x: targetScale, y: targetScale, z: targetScale,
+                duration: 0.45,
+                ease: "back.out(2)"
+            });
+
+            // BƯỚC 2: SỐ 2 (1.0s - 2.0s) - BIẾN THÀNH SỐ 2 LIỀN LUÔN
+            setTimeout(() => {
+                playCountdownBeep(2);
+                for (let i = 0; i < curPos.length; i++) {
+                    curPos[i] = digit2Pos[i];
+                    curCol[i] = col2[i];
+                }
+                posAttr.needsUpdate = true;
+                colAttr.needsUpdate = true;
+
+                cakeGroup.scale.set(targetScale * 0.35, targetScale * 0.35, targetScale * 0.35);
+                gsap.to(cakeGroup.scale, {
+                    x: targetScale, y: targetScale, z: targetScale,
+                    duration: 0.4,
+                    ease: "back.out(2)"
+                });
+            }, 1000);
+
+            // BƯỚC 3: SỐ 3 (2.0s - 3.0s) - BIẾN THÀNH SỐ 3 LIỀN LUÔN
+            setTimeout(() => {
+                playCountdownBeep(3);
+                for (let i = 0; i < curPos.length; i++) {
+                    curPos[i] = digit3Pos[i];
+                    curCol[i] = col3[i];
+                }
+                posAttr.needsUpdate = true;
+                colAttr.needsUpdate = true;
+
+                cakeGroup.scale.set(targetScale * 0.35, targetScale * 0.35, targetScale * 0.35);
+                gsap.to(cakeGroup.scale, {
+                    x: targetScale, y: targetScale, z: targetScale,
+                    duration: 0.4,
+                    ease: "back.out(2)"
+                });
+            }, 2000);
+
+            // BƯỚC 4: BẮN PHÁO HOA 1 CÁI (3.0s - 3.6s)
+            setTimeout(() => {
+                playFireworkExplosionSound();
+                celebrateFireworks();
+
+                for (let i = 0; i < curCol.length; i++) curCol[i] = colExp[i];
+                colAttr.needsUpdate = true;
+
+                const morphObj = { p: 0 };
+                gsap.to(morphObj, {
+                    p: 1,
+                    duration: 0.55,
+                    ease: "power3.out",
+                    onUpdate: () => {
+                        const p = morphObj.p;
+                        for (let i = 0; i < curPos.length; i++) {
+                            curPos[i] = digit3Pos[i] + (explosionPos[i] - digit3Pos[i]) * p;
+                        }
+                        posAttr.needsUpdate = true;
+                    }
+                });
+            }, 3000);
+
+            // BƯỚC 5: RÁP LẠI THÀNH BÁNH KEM 3D (3.6s - 5.4s)
+            setTimeout(() => {
+                const morphObj = { p: 0 };
+                gsap.to(morphObj, {
+                    p: 1,
+                    duration: 1.8,
+                    ease: "power3.out",
+                    onUpdate: () => {
+                        const p = morphObj.p;
+                        for (let i = 0; i < curPos.length; i++) {
+                            curPos[i] = explosionPos[i] + (cakeFinalPos[i] - explosionPos[i]) * p;
+                            curCol[i] = colExp[i] + (cakeFinalCol[i] - colExp[i]) * p;
+                        }
+                        posAttr.needsUpdate = true;
+                        colAttr.needsUpdate = true;
+                    },
+                    onComplete: () => {
+                        startBackgroundMusic();
+
+                        flamePoints.visible = true;
+                        isCandlesLit = true;
+                        gsap.fromTo(flamePoints.scale,
+                            { x: 0, y: 0, z: 0 },
+                            { x: 1, y: 1, z: 1, duration: 0.8, ease: "back.out(2)" }
+                        );
+
+                        if (cakeHeader) {
+                            cakeHeader.style.opacity = '1';
+                            cakeHeader.style.transform = 'translateY(0)';
+                            cakeHeader.style.pointerEvents = 'auto';
+                        }
+                        if (bottomBar) {
+                            bottomBar.style.opacity = '1';
+                            bottomBar.style.transform = 'translateX(-50%) translateY(0)';
+                            bottomBar.style.pointerEvents = 'auto';
+                        }
+                        if (topControls) {
+                            topControls.style.opacity = '1';
+                            topControls.style.pointerEvents = 'auto';
+                        }
+                        sessionStorage.setItem('birthday_unlocked', 'true');
+                        sessionStorage.setItem('skip_countdown', 'true');
+                        document.documentElement.classList.add('direct-cake-mode');
+                        try {
+                            history.replaceState(null, null, '#cake');
+                        } catch (e) {
+                            window.location.hash = '#cake';
+                        }
+                    }
+                });
+            }, 3600);
+        }
+
+        /* ==========================================================================
+           TẠO HÌNH NGỌN LỬA NẾN
+           ========================================================================== */
+        function buildCandleFlames() {
+            const h2_top = 40;
+            const flameWicks = [
+                { x: 0, z: 0, yBase: h2_top + 48 + 8, scale: 1.15 },
+                { x: -35, z: 0, yBase: h2_top + 40 + 8, scale: 0.95 },
+                { x: 35, z: 0, yBase: h2_top + 40 + 8, scale: 0.95 }
+            ];
+
+            flamePositions = [];
+            originalFlamePositions = [];
+            const flameColors = [];
+
+            flameWicks.forEach(w => {
+                const particleCount = 140;
+                for (let i = 0; i < particleCount; i++) {
+                    const u = Math.random();
+                    const flameHeight = 26 * w.scale;
+                    const py = w.yBase + u * flameHeight;
+
+                    const radius = Math.sin(u * Math.PI) * (6.5 * w.scale) * (1 - u * 0.3);
+                    const theta = Math.random() * Math.PI * 2;
+                    const r = Math.random() * radius;
+
+                    const px = w.x + Math.cos(theta) * r;
+                    const pz = w.z + Math.sin(theta) * r;
+
+                    flamePositions.push(px, py, pz);
+                    originalFlamePositions.push(px, py, pz, w.x, w.z, w.yBase);
+
+                    if (u < 0.25) {
+                        flameColors.push(1.0, 1.0, 0.9);
+                    } else if (u < 0.7) {
+                        flameColors.push(1.0, 0.85, 0.2);
+                    } else {
+                        flameColors.push(1.0, 0.45, 0.05);
+                    }
+                }
+            });
+
+            const flameGeo = new THREE.BufferGeometry();
+            flameGeo.setAttribute('position', new THREE.Float32BufferAttribute(flamePositions, 3));
+            flameGeo.setAttribute('color', new THREE.Float32BufferAttribute(flameColors, 3));
+
+            const flameMat = new THREE.PointsMaterial({
+                size: 6,
+                map: createFlameTexture(),
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true,
+                depthWrite: false
+            });
+
+            flamePoints = new THREE.Points(flameGeo, flameMat);
+            cakeGroup.add(flamePoints);
+        }
+
+        /* ==========================================================================
+           BỤI SAO BAY LƠ LỬNG
+           ========================================================================== */
+        function buildFloatingStars() {
+            const count = 400;
+            const starPos = [];
+            const starCol = [];
+
+            for (let i = 0; i < count; i++) {
+                starPos.push(
+                    (Math.random() - 0.5) * 900,
+                    (Math.random() - 0.5) * 700,
+                    (Math.random() - 0.5) * 900
+                );
+                const col = new THREE.Color();
+                col.setHSL(0.85 + Math.random() * 0.2, 0.8, 0.75);
+                starCol.push(col.r, col.g, col.b);
+            }
+
+            const starGeo = new THREE.BufferGeometry();
+            starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+            starGeo.setAttribute('color', new THREE.Float32BufferAttribute(starCol, 3));
+
+            const starMat = new THREE.PointsMaterial({
+                size: 3.5,
+                map: createParticleTexture(),
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true,
+                depthWrite: false
+            });
+
+            starPoints = new THREE.Points(starGeo, starMat);
+            scene.add(starPoints);
+        }
+
+        /* ==========================================================================
+           LOGIC: THỔI NẾN LÀ HIỆN LỜI CHÚC LIỀN + TẮT NHẠC
+           TRONG THỜI GIAN THỔI CHÚC KHÔNG ĐƯỢC THẮP NẾN LẠI
+           NGƯỜI DÙNG TẮT KHUNG LỜI CHÚC MỚI ĐƯỢC THẮP NẾN LẠI
+           ========================================================================== */
+        btnBlowCandles.addEventListener('click', () => {
+            if (isCandlesLit) {
+                // 1. THỔI TẮT NẾN
+                isCandlesLit = false;
+                playBeep(300, 0.3, 'sine');
+
+                // Khóa nút lại trong thời gian thổi & xem lời chúc (KHÔNG ĐƯỢC THẮP NẾN LẠI NGAY)
+                btnBlowCandles.disabled = true;
+                btnBlowCandles.classList.add('disabled');
+                btnBlowCandles.innerHTML = "<span>✨</span> Lời Chúc";
+
+                // Diễn hoạt thổi bay ngọn lửa nến
+                gsap.to(flamePoints.scale, {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                    duration: 0.5,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        flamePoints.visible = false;
+                    }
+                });
+
+                // Bắn pháo hoa rực rỡ ăn mừng
+                celebrateFireworks();
+
+                // HIỆN LỜI CHÚC LIỀN VÀ TẮT NHẠC
+                setTimeout(() => {
+                    openWishCard();
+                }, 350);
+
+            } else {
+                // 2. THẮP LẠI NẾN (chỉ bấm được sau khi người dùng đã đóng khung lời chúc)
+                isCandlesLit = true;
+                playBeep(600, 0.1);
+                btnBlowCandles.innerHTML = "<span>🕯️</span> Thổi Nến";
+                flamePoints.visible = true;
+                flamePoints.scale.set(0, 0, 0);
+                gsap.to(flamePoints.scale, {
+                    x: 1,
+                    y: 1,
+                    z: 1,
+                    duration: 0.6,
+                    ease: "back.out(2)"
+                });
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.6 }
+                });
+            }
+        });
+
+        const btnSurprise = document.getElementById('btnSurprise');
+        if (btnSurprise) {
+            btnSurprise.addEventListener('click', () => {
+                sessionStorage.setItem('birthday_unlocked', 'true');
+                sessionStorage.setItem('skip_countdown', 'true');
+                window.location.href = 'troll.html';
+            });
+        }
+
+        function celebrateFireworks() {
+            const count = 200;
+            const defaults = { origin: { y: 0.7 } };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
+
+        /* ==========================================================================
+           MAIN RENDER LOOP (60 FPS)
+           ========================================================================== */
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            if (controls) controls.update();
+
+            if (flamePoints && isCandlesLit && flamePoints.visible) {
+                const pos = flamePoints.geometry.attributes.position.array;
+                const totalFlamePoints = pos.length / 3;
+
+                for (let i = 0; i < totalFlamePoints; i++) {
+                    const idx = i * 3;
+                    const origX = originalFlamePositions[i * 6];
+                    const origY = originalFlamePositions[i * 6 + 1];
+                    const origZ = originalFlamePositions[i * 6 + 2];
+                    const wY = originalFlamePositions[i * 6 + 5];
+
+                    const relY = origY - wY;
+
+                    const waveX = Math.sin(elapsedTime * 9 + origY * 0.1) * (relY * 0.12);
+                    const waveZ = Math.cos(elapsedTime * 8 + origY * 0.1) * (relY * 0.1);
+                    const flameBreath = Math.sin(elapsedTime * 12 + i) * 1.5;
+
+                    pos[idx] = origX + waveX;
+                    pos[idx + 1] = origY + flameBreath;
+                    pos[idx + 2] = origZ + waveZ;
+                }
+                flamePoints.geometry.attributes.position.needsUpdate = true;
+            }
+
+            if (starPoints) {
+                starPoints.rotation.y = elapsedTime * 0.025;
+            }
+
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
