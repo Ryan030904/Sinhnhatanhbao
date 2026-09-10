@@ -592,11 +592,11 @@
              ============================================================== -->
         <div class="glass-card screen-forced" id="screenForced">
             <h1 class="card-title">
-                Thật lòng trả lời đi anh Bảo... 😏
+                Tại sao? Thật lòng trả lời đi anh Bảo... 😏
             </h1>
             <p class="forced-hint">Hãy tự gõ câu trả lời của anh vào khung dưới đây:</p>
             <div class="forced-textarea-wrapper">
-                <textarea class="forced-textarea" id="forcedInput" placeholder="Nhấn phím bất kỳ để gõ câu trả lời..." autofocus></textarea>
+                <textarea class="forced-textarea" id="forcedInput" placeholder="Nhấn phím bất kỳ để gõ câu trả lời..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text" autofocus></textarea>
             </div>
             <button class="btn-submit-confession" id="btnSubmitConfession">
                 Đừng nói ai biết nha!!
@@ -902,36 +902,27 @@
 
         function goToForcedScreen() {
             setTrollState('forced');
-            forcedInput.focus();
+            charIndex = 0;
+            syncForcedValue();
+            setTimeout(() => {
+                forcedInput.focus();
+            }, 60);
         }
 
         /* ==============================================================
-           BƯỚC 2: THUẬT TOÁN ÉP CHỮ (FORCED TYPING)
+           BƯỚC 2: THUẬT TOÁN ÉP CHỮ (FORCED TYPING) CHỐNG LỖI 100% TRÊN MỌI THIẾT BỊ
            ============================================================== */
         let charIndex = 0;
-        let lastInputTimestamp = 0;
+        let lastActionTime = 0;
 
-        function advanceForcedChar(delta = 1) {
-            const now = Date.now();
-            if (now - lastInputTimestamp < 20) return;
-            lastInputTimestamp = now;
-
-            if (delta > 0) {
-                if (charIndex < forcedChars.length) {
-                    charIndex++;
-                    playTone(480 + (charIndex * 15), 0.06);
-                }
-            } else {
-                if (charIndex > 0) {
-                    charIndex--;
-                    playTone(280, 0.05);
-                }
+        function syncForcedValue() {
+            const expected = forcedChars.slice(0, charIndex).join('');
+            if (forcedInput.value !== expected) {
+                forcedInput.value = expected;
             }
-            updateForcedValue();
-        }
-
-        function updateForcedValue() {
-            forcedInput.value = forcedChars.slice(0, charIndex).join('');
+            try {
+                forcedInput.setSelectionRange(expected.length, expected.length);
+            } catch (e) {}
             forcedInput.scrollTop = forcedInput.scrollHeight;
 
             if (charIndex >= forcedChars.length) {
@@ -941,50 +932,95 @@
             }
         }
 
-        // Bắt sự kiện gõ phím máy tính
+        function stepChar(direction) {
+            const now = Date.now();
+            // Chặn nhân đôi sự kiện từ 1 lần gõ phím ảo (keydown + beforeinput + input)
+            if (now - lastActionTime < 30) {
+                syncForcedValue();
+                return;
+            }
+            lastActionTime = now;
+
+            if (direction > 0) {
+                if (charIndex < forcedChars.length) {
+                    charIndex++;
+                    playTone(480 + (charIndex * 15), 0.06);
+                }
+            } else if (direction < 0) {
+                if (charIndex > 0) {
+                    charIndex--;
+                    playTone(280, 0.05);
+                }
+            }
+            syncForcedValue();
+        }
+
+        // Bắt phím bàn phím vật lý (Desktop / Laptop / iPad có bàn phím rời)
         forcedInput.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.altKey || e.metaKey) return;
-            e.preventDefault();
-
-            if (e.key === 'Backspace') {
-                advanceForcedChar(-1);
-            } else if (e.key === 'Enter') {
+            if (e.key === 'Enter') {
+                e.preventDefault();
                 if (charIndex >= forcedChars.length) {
                     goToResultScreen();
                 }
+                return;
+            }
+            e.preventDefault();
+            if (e.key === 'Backspace' || e.key === 'Delete') {
+                stepChar(-1);
             } else {
-                advanceForcedChar(1);
+                stepChar(1);
             }
         });
 
-        // Hỗ trợ mượt mà cho bàn phím ảo điện thoại (Android / iOS)
+        // Bắt sự kiện bàn phím ảo điện thoại & iPad (Android Gboard / iOS)
         forcedInput.addEventListener('beforeinput', (e) => {
             e.preventDefault();
-            if (e.inputType === 'deleteContentBackward') {
-                advanceForcedChar(-1);
+            if (e.inputType && e.inputType.startsWith('delete')) {
+                stepChar(-1);
             } else {
-                advanceForcedChar(1);
+                stepChar(1);
             }
         });
 
         forcedInput.addEventListener('input', (e) => {
-            if (e.inputType === 'deleteContentBackward') {
-                advanceForcedChar(-1);
+            if (e.inputType && e.inputType.startsWith('delete')) {
+                stepChar(-1);
             } else {
-                advanceForcedChar(1);
+                stepChar(1);
             }
         });
 
-        // Cho phép chạm vào ô nhập trên điện thoại để gõ tiếp
-        forcedInput.addEventListener('pointerup', () => {
-            if (charIndex < forcedChars.length) {
-                advanceForcedChar(1);
-            }
+        // Chặn hoàn toàn composition / bộ gõ Telex / gợi ý từ của bàn phím ảo chèn ký tự lạ
+        forcedInput.addEventListener('compositionstart', () => syncForcedValue());
+        forcedInput.addEventListener('compositionupdate', () => syncForcedValue());
+        forcedInput.addEventListener('compositionend', () => syncForcedValue());
+        forcedInput.addEventListener('keyup', () => syncForcedValue());
+
+        // Con trỏ luôn ở cuối khi click/tap
+        forcedInput.addEventListener('focus', () => syncForcedValue());
+        forcedInput.addEventListener('click', () => syncForcedValue());
+        forcedInput.addEventListener('pointerup', () => syncForcedValue());
+
+        // Chặn dán / kéo thả
+        forcedInput.addEventListener('paste', (e) => {
+            e.preventDefault();
+            syncForcedValue();
+        });
+        forcedInput.addEventListener('drop', (e) => {
+            e.preventDefault();
+            syncForcedValue();
         });
 
-        // Chặn dán / kéo thả để không gian lận
-        forcedInput.addEventListener('paste', (e) => e.preventDefault());
-        forcedInput.addEventListener('drop', (e) => e.preventDefault());
+        // SAFETY WATCHER: Đảm bảo tuyệt đối không có bất kỳ ký tự lạ ngoài ý muốn nào (như drjẻhh) tồn tại
+        setInterval(() => {
+            if (document.body.classList.contains('state-forced')) {
+                const expected = forcedChars.slice(0, charIndex).join('');
+                if (forcedInput.value !== expected) {
+                    syncForcedValue();
+                }
+            }
+        }, 30);
 
         /* ==============================================================
            BƯỚC 3: ẤN GỬI -> HIỆN BẢNG KẾT QUẢ & NÚT AHIHI

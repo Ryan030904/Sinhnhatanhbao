@@ -390,7 +390,7 @@
                 text-transform: none;
             }
             .bottom-action-bar {
-                bottom: max(16px, env(safe-area-inset-bottom, 16px));
+                bottom: max(68px, calc(env(safe-area-inset-bottom, 16px) + 52px));
                 left: 50% !important;
                 transform: translateX(-50%) !important;
                 width: 100%;
@@ -446,7 +446,7 @@
                 letter-spacing: 0.2px;
             }
             .bottom-action-bar {
-                bottom: 12px;
+                bottom: max(64px, calc(env(safe-area-inset-bottom, 12px) + 48px));
                 left: 50% !important;
                 transform: translateX(-50%) !important;
                 max-width: calc(100vw - 16px);
